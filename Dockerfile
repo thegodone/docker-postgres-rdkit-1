@@ -1,9 +1,9 @@
-ARG postgres_image_version=14.2
+ARG postgres_image_version=15
 FROM docker.io/postgres:${postgres_image_version} AS builder
-ARG postgres_version=14
+ARG postgres_version=15
 ARG boost_dev_version=1.74
 ARG rdkit_git_url=https://github.com/rdkit/rdkit.git
-ARG rdkit_git_ref=Release_2022_03_2
+ARG rdkit_git_ref=Release_2022_03_1
 
 RUN apt-get update \
     && apt-get install -yq --no-install-recommends \
@@ -25,7 +25,7 @@ RUN apt-get update \
         libboost-system${boost_dev_version}-dev \
         libeigen3-dev \
         libfreetype6-dev \
-        postgresql-server-dev-${postgres_version}=$(postgres -V | awk '{print $3}')\* \
+        postgresql-server-dev-15 \
         zlib1g-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -79,9 +79,9 @@ RUN initdb -D /opt/RDKit-build/pgdata \
   && pg_ctl -D /opt/RDKit-build/pgdata stop
 
 
-ARG postgres_image_version=14.2
+ARG postgres_image_version=15
 FROM docker.io/postgres:${postgres_image_version}
-ARG postgres_version=14
+ARG postgres_version=15
 ARG boost_version=1.74.0
 
 RUN apt-get update \
